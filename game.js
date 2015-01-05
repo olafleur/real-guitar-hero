@@ -17,7 +17,7 @@
             setBackground();
             self.draw(screen);
 
-            if(ticker == 60) {
+            if(ticker == 30) {
                 self.addNote(new Note(gameSize.x, YPORTEE + 25 * Math.floor((Math.random() * 9) - 2)));
                 ticker = 0;
             }
