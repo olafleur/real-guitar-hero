@@ -5,19 +5,28 @@
         var gameSize = {x: canvas.width, y: canvas.height};
         var XMIN = 10;
         var YPORTEE = 200;
+        var ticker = 0;
 
-        this.notes = [new Note(this, gameSize)];
+        this.notes = [];
 
         var self = this;
 
         var tick = function() {
+            screen.clearRect(0, 0, gameSize.x, gameSize.y);
             self.update();
-            self.draw(screen, gameSize);
-            setVisuals();
+            setBackground();
+            self.draw(screen);
+
+            if(ticker == 60) {
+                self.addNote(new Note(gameSize.x, YPORTEE + 25 * Math.floor((Math.random() * 9) - 2)));
+                ticker = 0;
+            }
+
+            ticker++;
             requestAnimationFrame(tick);
         };
 
-        var setVisuals = function() {
+        var setBackground = function() {
             drawVerticalLine();
             drawPortee();
         };
@@ -44,25 +53,25 @@
 
     Game.prototype = {
        update: function() {
-           var notes = this.notes;
-
            for(var i = 0; i < this.notes.length; i++) {
-               notes[i].update();
+               this.notes[i].update();
            }
        },
 
-        draw: function(screen, gameSize) {
-            screen.clearRect(0, 0, gameSize.x, gameSize.y);
-            console.log(this.notes.length);
+        draw: function(screen) {
             for(var i = 0; i < this.notes.length; i++) {
                 drawNote(screen, this.notes[i]);
             }
+        },
+
+        addNote: function(note) {
+            this.notes.push(note);
         }
     };
 
-    var Note = function(game, gameSize) {
+    var Note = function(x, y) {
         this.size = {x: 15, y: 15};
-        this.center = {x: gameSize.x, y: gameSize.y / 2};
+        this.center = {x: x, y: y};
     };
 
     Note.prototype = {
