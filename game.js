@@ -3,6 +3,8 @@
         var canvas = document.getElementById(canvasId);
         var screen = canvas.getContext('2d');
         var gameSize = {x: canvas.width, y: canvas.height};
+        var XMIN = 10;
+        var YPORTEE = 200;
 
         this.notes = [new Note(this, gameSize)];
 
@@ -11,7 +13,30 @@
         var tick = function() {
             self.update();
             self.draw(screen, gameSize);
+            setVisuals();
             requestAnimationFrame(tick);
+        };
+
+        var setVisuals = function() {
+            drawVerticalLine();
+            drawPortee();
+        };
+
+        var drawVerticalLine = function() {
+            screen.beginPath();
+            screen.moveTo(XMIN, 0);
+            screen.lineTo(XMIN, gameSize.y);
+            screen.stroke();
+        };
+
+        var drawPortee = function() {
+
+            for(var i = 0; i < 5; i++) {
+                screen.beginPath();
+                screen.moveTo(XMIN, YPORTEE + i * 25);
+                screen.lineTo(gameSize.x, YPORTEE + i * 25);
+                screen.stroke();
+            }
         };
 
         tick();
