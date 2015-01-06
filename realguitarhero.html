@@ -8,5 +8,17 @@
 <canvas id="screen" width="1200" height="500">
     <script src="game.js"></script>
 </canvas>
+
+<p><label>
+    <input type="range" min="20" max="200" value="120" step="1" onchange="showValue(this.value)"/>
+</label>
+    <span id="range">120</span> bpm
+    <script type="text/javascript">
+        function showValue(newValue)
+        {
+            document.getElementById("range").innerHTML=newValue;
+        }
+    </script>
+</p>
 </body>
 </html>
