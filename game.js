@@ -18,7 +18,7 @@
             self.draw(screen);
 
             if(ticker == 30) {
-                self.addNote(new Note(gameSize.x, YPORTEE + 25 * Math.floor((Math.random() * 9) - 2)));
+                self.addNote(Note.buildRandomNote(gameSize, YPORTEE));
                 ticker = 0;
             }
 
@@ -42,8 +42,8 @@
 
             for(var i = 0; i < 5; i++) {
                 screen.beginPath();
-                screen.moveTo(XMIN, YPORTEE + i * 25);
-                screen.lineTo(gameSize.x, YPORTEE + i * 25);
+                screen.moveTo(XMIN, YPORTEE + i * 24);
+                screen.lineTo(gameSize.x, YPORTEE + i * 24);
                 screen.stroke();
             }
         };
@@ -69,9 +69,10 @@
         }
     };
 
-    var Note = function(x, y) {
+    var Note = function(x, y, alteration) {
         this.size = {x: 15, y: 15};
         this.center = {x: x, y: y};
+        this.alteration = alteration;
     };
 
     Note.prototype = {
@@ -80,11 +81,28 @@
         }
     };
 
+    Note.buildRandomNote = function(gameSize, yPortee) {
+        var alteration = Math.floor(Math.random() * 3);
+
+        return new Note(gameSize.x, yPortee + 12 * Math.floor((Math.random() * 13) - 2), alteration);
+    };
+
     var drawNote = function(screen, note) {
         screen.fillRect(note.center.x - note.size.x / 2,
                         note.center.y - note.size.y / 2,
                         note.size.x,
                         note.size.y);
+
+        switch(note.alteration) {
+            case 1:
+                screen.fillText("#", note.center.x + note.size.x, note.center.y);
+                break;
+            case 2:
+                screen.fillText("b", note.center.x + note.size.x, note.center.y);
+                break;
+            default:
+                break;
+        }
     };
 
     window.onload = function() {
